@@ -1,0 +1,38 @@
+<nav
+  [ngStyle]="{ 'background-color': (colors$ | async)?.primaryColor }"
+  class="opacity-85  text-white px-12 py-4 flex justify-between items-center sticky top-0 z-50 shadow-lg transition-all duration-300 hover:opacity-100"
+>
+  <div class="text-2xl font-bold tracking-wider">{{ title }}</div>
+
+  <ul class="flex gap-6">
+    <li
+      *ngFor="let link of links"
+      (mouseenter)="hoveredLink = link"
+      (mouseleave)="hoveredLink = null"
+      class="relative"
+    >
+      <a [routerLink]="link.path" class="inline-block pb-1">
+        <!-- Texte dont la couleur change au hover -->
+        <span
+          class="transition-colors duration-300"
+          [ngStyle]="{
+            color: hoveredLink === link
+              ? (colors$ | async)?.secondaryColor
+              : '#ffffff'
+          }"
+        >
+          {{ link.label }}
+        </span>
+
+        <!-- Ligne de soulignement dont la couleur et la largeur évoluent -->
+        <span
+          class="absolute left-0 bottom-0 h-0.5 transition-all duration-300"
+          [ngStyle]="{
+            'background-color': (colors$ | async)?.secondaryColor,
+            width: hoveredLink === link ? '100%' : '0'
+          }"
+        ></span>
+      </a>
+    </li>
+  </ul>
+</nav>
