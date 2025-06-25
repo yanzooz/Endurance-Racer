@@ -23,7 +23,7 @@ export const CARS: EnduranceCar[] = [
     name: 'Aston Martin Valkyrie AMR‑LMH #007',
     constructor: 'Aston Martin',
     category: 'Hypercar',
-    teamId: 11,                // Aston Martin THOR Team
+    teamId: 8,                // Aston Martin THOR Team
     specs: { engine: '6.5 L V12 NA', power: '675 ch', weight: '1042 kg' },
     imageUrl: 'images/imagesInterface/astonMartin/astonmartin7.png',
     gallery: [

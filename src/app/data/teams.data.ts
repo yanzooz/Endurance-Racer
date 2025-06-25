@@ -64,5 +64,13 @@ export const TEAMS: Team[] = [
     cars: [35, 36],
      imageUrl: '/images/imagesInterface/alpine/alpine-logo.png'
   },
+  {
+    id: 8,
+    name: 'Aston Martin THOR Team',
+    constructor: 'Aston Martin',
+    country: 'Grande-Bretagne',
+    cars: [7, 9],
+     imageUrl: '/images/imagesInterface/astonMartin/aston-logo.png'
+  },
  
 ];
