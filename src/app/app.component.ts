@@ -9,7 +9,7 @@ import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  imports: [NavbarComponent, HomeComponent, FooterComponent,EndurenceCarListComponent,RouterOutlet],
+  imports: [NavbarComponent, FooterComponent,RouterOutlet],
   template: `
     <app-navbar></app-navbar>
     <router-outlet></router-outlet>

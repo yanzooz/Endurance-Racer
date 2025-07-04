@@ -1,34 +1,38 @@
- <!-- Loader full-screen -->
-<div
-  class="fixed inset-0 bg-black flex items-center justify-center z-50
-         transition-opacity duration-700"
-  [ngClass]="{
-    'opacity-100 pointer-events-auto': loading,
-    'opacity-0 pointer-events-none': !loading
-  }"
->
-  <img
-    [src]="team?.imageUrl"
-    alt="Logo {{ car?.name }}"
-    class="w-1/2 h-1/2 object-contain animate-pulse"
-  />
+
+<div class="relative">
+  <!-- LOADER (en fond) -->
+  <div
+    class="fixed inset-0 bg-black flex items-center justify-center z-50
+           transition-opacity duration-1000"
+    [class.opacity-0]="!loading"
+    [class.pointer-events-none]="!loading"
+  >
+    <img
+      title="loading"
+      *ngIf="car!.team.imageUrl"
+      [src]="car!.team.imageUrl"
+      [alt]="'Logo ' + car!.team.name"
+      class="w-1/2 h-1/2 object-contain animate-pulse"
+    />
+  </div>
 </div>
 
- <div class="bg-black text-white min-h-screen transition-opacity duration-700"
-      [ngClass]="{ 'opacity-0': loading, 'opacity-100': !loading }"> 
 
-  @if (car) {
+ <div 
+  *ngIf="!loading"
+  class="bg-black text-white min-h-screen transition-opacity duration-700"> 
+  
   <div class="mx-20 px-4 py-10 space-y-10 text-white bg-black 2xl:mx-80">
     <!-- Retour -->
-    <a [style.color]="car.colors.secondaryColor" routerLink="/seasons" class="text-2xl hover:underline ">
+    <a [style.color]="car!.secondaryColor" routerLink="/seasons" class="text-2xl hover:underline ">
       ← Retour à la liste
     </a>
 
     <!-- Bannière principale -->
     <div class="w-full max-h-160 mt-10 overflow-hidden ">
       <img
-        [src]="car.gallery[0]"
-        alt="{{ car.name }}"
+        [src]="car!.gallery[0]"
+        alt="{{ car!.name }}"
         class="w-full h-full object-center 
            brightness-90 contrast-100 
            "/>
@@ -36,52 +40,53 @@
 
         <!-- Titre -->
     <h1 class="text-4xl md:text-5xl font-bold uppercase text-center shine">
-        {{ car.name }}
+        {{ car!.name }}
     </h1>
 
     <section 
-        [style.background-color]="car.colors.primaryColor"
+        [style.background-color]="car!.primaryColor"
         class="relative  opacity-55 duration-700 hover:opacity-100 grid    
                 md:grid-cols-2   p-5 py-10 transition-all overflow-hidden ">
         <!-- Logo en fond watermark -->
         <img
-          *ngIf="team?.imageUrl"
-          [src]="team?.imageUrl"
-          alt="{{ team?.name }}"
+        title="car logo"
+          *ngIf="car!.team.imageUrl"
+          [src]="car!.team.imageUrl"
+          [alt]=" car!.name "
           class="absolute cursor-pointer object-cover opacity-25 w-120 inset-0 m-auto transition-all duration-5000 hover:scale-110 hover:opacity-55"/>
 
         <!-- Contenu principal (au-dessus du logo) -->
         <div class="text-1xl lg:text-2xl  space-y-3">
-          <h2 [style.color]="car.colors.secondaryColor" class="text-2xl lg:text-4xl font-bold">
+          <h2 [style.color]="car!.secondaryColor" class="text-2xl lg:text-4xl font-bold">
             Informations générales
           </h2>
-          <p><strong>Constructeur :</strong> {{ car.constructor }}</p>
-          <p><strong>Catégorie :</strong> {{ car.category }}</p>
-          <p><strong>Écurie :</strong> {{ team!.name }}</p>
+          <p><strong>Constructeur :</strong> {{ car!.constructor }}</p>
+          <p><strong>Catégorie :</strong> {{ car!.category }}</p>
+          <p><strong>Écurie :</strong> {{ car!.team.name }}</p>
         </div>
 
         <div class="text-1xl lg:text-2xl justify-items-end z-10">
-          <h2 [style.color]="car.colors.secondaryColor" class="text-2xl lg:text-4xl font-bold mb-2">
+          <h2 [style.color]="car!.secondaryColor" class="text-2xl lg:text-4xl font-bold mb-2">
             Fiche technique
           </h2>
           <ul class=" list-inside space-y-1 justify-items-end">
-            <li><strong>Moteur :</strong> {{ car.specs.engine }}</li>
-            <li><strong>Puissance :</strong> {{ car.specs.power }}</li>
-            <li *ngIf="car.specs.weight"><strong>Poids :</strong> {{ car.specs.weight }}</li>
+            <li><strong>Moteur :</strong> {{ car!.engine }}</li>
+            <li><strong>Puissance :</strong> {{ car!.power }}</li>
+            <li *ngIf="car!.weight"><strong>Poids :</strong> {{ car!.weight }}</li>
           </ul>
         </div>
       </section>
 
     <!-- Galerie -->
     <section>
-      <h2 [style.color]="car.colors.secondaryColor" class="text-4xl font-semibold mb-4 ">Galerie</h2>
+      <h2 [style.color]="car!.secondaryColor" class="text-4xl font-semibold mb-4 ">Galerie</h2>
       <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4">
         <div
-          *ngFor="let img of car.gallery"
+          *ngFor="let img of car!.gallery"
           class="w-full h-full overflow-hidden  group">
         <img
             [src]="img"
-            alt="Image {{ car.name }}"
+            alt="Image {{ car!.name }}"
             class="w-full h-full object-cover
                   transition-all duration-3000 
                   cursor-pointer
@@ -92,18 +97,19 @@
     </section>
 
     <!-- Pilotes -->
+<!-- Pilotes -->
 <!-- car-detail.component.html -->
-  <h2
-    [style.color]="car.colors.secondaryColor"
-    class="text-4xl font-bold mb-6  text-white">
-    Pilotes
-  </h2>
+<h2
+  [style.color]="car!.secondaryColor"
+  class="text-4xl font-bold mb-6 text-white"
+>
+  Pilotes
+</h2>
 
-<section *ngIf="drivers.length" class="py-8 ">
-
-  <ul class="flex overflow-hidden  h-180  xl:mx-20">
+<section *ngIf="car!.drivers" class="py-8">
+  <ul class="flex overflow-hidden h-180 xl:mx-20">
     <li
-      *ngFor="let d of drivers; let i = index"
+      *ngFor="let d of car!.drivers; let i = index"
       (mouseenter)="onHover(i)"
       (mouseleave)="onLeave()"
       class="group relative transition-all duration-500 ease-in-out cursor-pointer"
@@ -117,57 +123,63 @@
         [src]="d.imageUrl || 'assets/images/placeholder-driver.png'"
         alt="{{ d.name }}"
         class="w-full h-full object-cover xl:h-250
-         filter grayscale transition-filter duration-500
-         group-hover:grayscale-0"
+               filter grayscale transition-filter duration-500
+               group-hover:grayscale-0"
       />
 
       <!-- Overlay description uniquement sur la carte active -->
       <div
         *ngIf="activePilotIndex === i"
-        class="absolute inset-0  bg-gradient-to-t from-black/80 via-black/50 to-transparent text-white p-6 flex flex-col justify-end"
+        class="absolute inset-0 pointer-events-none
+               bg-gradient-to-t from-black/80 via-black/50 to-transparent
+               text-white p-6 flex flex-col justify-end"
       >
-        <h3 class="text-4xl xl:text-6xl font-semibold mb-2">{{ d.name }}</h3>
-        <p class="text-2xl sm:text-3xl  xl:text-4xl mb-1 "><strong>Nat. :</strong> {{ d.nationality }}</p>
-        <p class="text-2xl sm:text-3xl  xl:text-4xl"><strong>Écurie :</strong> {{ team?.name }}</p>
+        <h3 class="text-4xl xl:text-6xl font-semibold mb-2">
+          {{ d.name }}
+        </h3>
+
+        <div class="flex items-center justify-between">
+          <p class="text-2xl sm:text-3xl xl:text-4xl mb-1">
+            <strong>Nat. :</strong> {{ d.country.name }}
+          </p>
+          <img
+            [src]="d.country.flagUrl"
+            alt="Drapeau {{ d.country.name }}"
+            class="w-15 object-cover pointer-events-none"
+          />
+        </div>
+
+        <div class="flex items-center justify-between">
+          <p class="text-2xl sm:text-3xl xl:text-4xl">
+            <strong>Écurie :</strong> {{ car!.team.name }}
+          </p>
+
+        </div>
       </div>
     </li>
   </ul>
 </section>
 
-<div class="flex justify-between my-6 px-20">
-  <button
-    *ngIf="prevCarId"
-    [routerLink]="['/cars', prevCarId]"
-    [style.color]="car.colors.secondaryColor"
-    class="py-2 md:text-2xl cursor-pointer hover:underline transition"
-  >
-    ← Précédent
-  </button>
 
-  <button
-    *ngIf="nextCarId"
-    [routerLink]="['/cars', nextCarId]"
-    [style.color]="car.colors.secondaryColor"
-    class="py-2 md:text-2xl cursor-pointer hover:underline transition"
-  >
-    Suivant →
-  </button>
-</div>
+  <div class="flex justify-between my-6 px-20">
+    <button
+      *ngIf="prevCarId"
+      [routerLink]="['/cars', prevCarId]"
+      [style.color]="car!.secondaryColor"
+      class="py-2 md:text-2xl cursor-pointer hover:underline transition"
+    >
+      ← Précédent
+    </button>
 
-
-
-</div>
-
-
-
-} @else {
-  <div class="max-w-md mx-auto p-6 text-center text-gray-500">
-    Voiture non trouvée.
-    <div class="mt-4">
-      <a routerLink="/" class="text-cyan-400 hover:underline">
-        ← Retour à l’accueil
-      </a>
-    </div>
+    <button
+      *ngIf="nextCarId"
+      [routerLink]="['/cars', nextCarId]"
+      [style.color]="car!.secondaryColor"
+      class="py-2 md:text-2xl cursor-pointer hover:underline transition"
+    >
+      Suivant →
+    </button>
   </div>
-}
+  
+  </div>
 </div>

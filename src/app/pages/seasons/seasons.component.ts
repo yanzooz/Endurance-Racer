@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
-import { EndurenceCarListComponent } from '../../components/endurence-car-list/endurence-car-list.component';
+import { DynamicListComponent } from "../../components/dynamic-list/dynamic-list.component";
 
 
 @Component({
   selector: 'app-seasons',
-  imports: [EndurenceCarListComponent],
+  imports: [ DynamicListComponent],
   template: `
-  <app-endurence-car-list></app-endurence-car-list>
+  <app-dynamic-list></app-dynamic-list>
   `,
 })
 export class SeasonsComponent {

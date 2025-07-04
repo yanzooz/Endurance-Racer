@@ -1,0 +1,203 @@
+<!-- 1. Sélecteur d’entité -->
+<div class="mx-5 my-4">
+  <label class="font-medium">
+    Afficher :
+    <select (change)="onEntityChange($event)"
+            class="px-3 py-1 border rounded shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+      <option value="cars"    [selected]="entityType==='cars'">Voitures</option>
+      <option value="circuits"[selected]="entityType==='circuits'">Circuits</option>
+      <option value="pilotes" [selected]="entityType==='pilotes'">Pilotes</option>
+      <option value="equipes"[selected]="entityType==='equipes'">Équipes</option>
+    </select>
+  </label>
+</div>
+
+
+<!-- 3. Tableaux par entité -->
+<ng-container [ngSwitch]="entityType">
+
+  <!-- Voitures -->
+  <section *ngSwitchCase="'cars'" class="mx-5 my-10">
+    <h2 class="text-2xl flex justify-center font-semibold my-10">
+      Voitures Endurance 2025
+    </h2>
+    <table class="min-w-full bg-white shadow-md text-black overflow-hidden">
+      <thead class="bg-slate-800 text-white">
+        <tr>
+          <th class="px-4 py-4 text-left">Image</th>
+          <th class="px-4 py-4 text-left">Nom</th>
+          <th class="px-4 py-4 text-left">Constructeur</th>
+          <th class="px-4 py-4 text-left">Catégorie</th>
+          <th class="px-4 py-4 text-left">Écurie</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let car of filteredCars; trackBy: trackByCar"
+            (click)="showCarDetails(car.id)"
+            class="border-b last:border-0 cursor-pointer
+                   transition-all duration-300 ease-in-out transform
+                   hover:translate-x-4 hover:bg-blue-100">
+          <td class="px-4 py-4">
+            <img [src]="car.imageUrl"
+                  title="{{ car.name }}"
+                 [alt]="car.name"
+                 class="w-50 h-auto object-cover rounded" />
+          </td>
+          <td class="px-4 py-4">{{ car.name }}</td>
+          <td class="px-4 py-4">{{ car.constructor }}</td>
+          <td class="px-4 py-4">{{ car.category }}</td>
+          <td class="px-4 py-4">
+            <img [src]="car.team.imageUrl"
+                  title="{{ car.name }}"
+                 [alt]="car.team.name"
+                 class="w-50 h-auto object-cover rounded" />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+<!-- Circuits -->
+<section *ngSwitchCase="'circuits'" class="mx-5 my-10">
+  <h2 class="text-2xl flex justify-center font-semibold my-10">
+    Circuits
+  </h2>
+  <table class="min-w-full bg-white shadow-md text-black overflow-hidden">
+    <thead class="bg-slate-800 text-white">
+      <tr>
+        <th class="px-4 py-4 text-left">Image</th>
+        <th class="px-4 py-4 text-left">Nom</th>
+        <th class="px-4 py-4 text-left">Localisation</th>
+        <th class="px-4 py-4 text-left">Longueur (km)</th>
+        <th class="px-4 py-4 text-left">Tours</th>
+        <th class="px-4 py-4 text-left">Pays</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        *ngFor="let c of circuits; trackBy: trackByCircuit"
+        (click)="showDetail(c.id)"
+        class="border-b last:border-0 cursor-pointer
+               transition-all duration-300 ease-in-out transform
+               hover:translate-x-2 hover:bg-blue-50"
+      >
+        <!-- Image du circuit -->
+        <td class="px-4 py-4">
+          <img
+          title="{{ c.name }}"
+            [src]="c.imageUrl || 'assets/images/placeholder-circuit.png'"
+            [alt]="c.name"
+            class="w-60 h-auto object-cover object-top rounded"
+          />
+        </td>
+        <!-- Nom et localisation -->
+        <td class="px-4 py-4">{{ c.name }}</td>
+        <td class="px-4 py-4">{{ c.location }}</td>
+        <!-- Longueur et nombre de tours -->
+        <td class="px-4 py-4">{{ c.lengthKm }} km</td>
+        <td class="px-4 py-4">{{ c.lapCount }}</td>
+        <!-- Pays et drapeau -->
+        <td class="px-4 py-4 flex items-center space-x-2">
+          <img
+            [src]="c.country.flagUrl"
+            [alt]="c.country.code"
+            title="{{ c.country.name }}"
+            class="w-20 h-auto object-cover "
+          />
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+
+  <!-- Pilotes -->
+  <section *ngSwitchCase="'pilotes'" class="mx-5 my-10">
+    <h2 class="text-2xl flex justify-center font-semibold my-10">
+      Pilotes
+    </h2>
+    <table class="min-w-full bg-white shadow-md text-black overflow-hidden">
+      <thead class="bg-slate-800 text-white">
+        <tr>
+          <th class="px-4 py-4 text-left">Photo</th>
+          <th class="px-4 py-4 text-left">Pilote</th>
+          <th class="px-4 py-4 text-left">Nationalité</th>
+          <th class="px-4 py-4 text-left">Equipe</th>
+          <th class="px-4 py-4 text-left">Constructeur</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let d of drivers; trackBy: trackByDriver"
+            (click)="showDetail(d.id)"
+            class="border-b last:border-0 cursor-pointer
+                   transition-all duration-300 ease-in-out transform
+                   hover:translate-x-2 hover:bg-blue-50">
+          <td class="px-4 py-4">
+            <img [src]="d.imageUrl"
+                  title="{{ d.name }}"
+                 [alt]="d.team.name"
+                 class="w-20 h-20 object-cover object-top" />
+          </td>         
+          <td class="px-4 py-4">{{ d.name }}</td>
+          <td class="px-4 py-4">
+            <img [src]="d.country.flagUrl"
+                  title="{{ d.name }}"
+                 [alt]="d.team.name"
+                 class="w-20 h-auto object-cover " />
+          </td>
+          <td class="px-4 py-4">{{ d.team.name }}</td>
+          <td class="px-4 py-4">
+            <img [src]="d.team.imageUrl"
+                  title="{{ d.team.name }}"
+                 [alt]="d.team.name"
+                 class="w-35 h-auto object-cover r" />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Équipes -->
+  <section *ngSwitchCase="'equipes'" class="mx-5 my-10">
+    <h2 class="text-2xl flex justify-center font-semibold my-10">
+      Équipes
+    </h2>
+    <table class="min-w-full bg-white shadow-md text-black overflow-hidden">
+      <thead class="bg-slate-800 text-white">
+        <tr>
+          <th class="px-4 py-4 text-left">Équipe</th>
+          <th class="px-4 py-4 text-left">Constructeur</th>
+          <th class="px-4 py-4 text-left">logo</th>
+          <th class="px-4 py-4 text-left">Pays</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let t of equipes; trackBy: trackByTeam"
+            (click)="showDetail(t.id)"
+            class="border-b last:border-0 cursor-pointer
+                   transition-all duration-300 ease-in-out transform
+                   hover:translate-x-2 hover:bg-blue-50">
+          <td class="px-4 py-4">{{ t.name }}</td>
+          <td class="px-4 py-4">{{ t.constructor }}</td>
+          <td class="px-4 py-4">
+            <img [src]="t.imageUrl" [alt]="t.name" class="w-50 h-auto object-cover rounded"  title="test" />
+          </td>
+          <td class="px-4 py-4">
+            <img [src]="t.country.flagUrl" [alt]="t.country.name" class="w-20 h-auto object-cover rounded"  title="test" />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </section>
+
+</ng-container>
+
+<!-- 4. Boutons d’action -->
+<section class="mx-5 mb-10 flex justify-center space-x-6">
+  <a routerLink="/drivers"  class="px-6 py-3 bg-green-600 text-white rounded hover:bg-green-500 transition">
+    Liste des pilotes
+  </a>
+  <a routerLink="/circuits" class="px-6 py-3 bg-indigo-600 text-white rounded hover:bg-indigo-500 transition">
+    Liste des circuits
+  </a>
+</section>
